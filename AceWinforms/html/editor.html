@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <title>AceWinforms</title>
+    <style type="text/css" media="screen">
+        #editor {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Content will be replaced by winforms -->
+    <div id="editor">{{editorText}}</div>
+
+    <!-- Found this hosted version of ace.js, but you could include the -->
+    <script src="http://cdn.jsdelivr.net/ace/1.1.01/min/ace.js" type="text/javascript" charset="utf-8"></script>
+    
+    <!-- Instead of above, you could package up a pre-built version of ACE.JS (plus syntax highlighters, etc) and ship with your app... -->
+    <!--script src="file://S:/src/AceWinforms/src-min-10.28.2013/ace.js" type="text/javascript" charset="utf-8"></script-->
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/{{theme}}");
+        editor.getSession().setMode("ace/mode/{{highlighter}}");
+    </script>
+</body>
+</html>
