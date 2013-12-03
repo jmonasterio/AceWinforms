@@ -5,6 +5,6 @@ This project shows how to host the Ace editor in a regular C# Winforms app. ACE 
 
 Why do this? Because it's hard to find a free WinForms editor control with a BSD license. The ace javascript library, and this user control are both BSD.
 
-Here is a screenshot of Winforms sample app:
+Here is a screenshot of Winforms sample app. The dark "control" is the usercontrol from this project. You can resize the usercontrol and place it however you like. Also, you can load it from a text string and read the text out into another string.
 
 ![Alt text](/screenshot.jpg "Screenshot.jpg")
