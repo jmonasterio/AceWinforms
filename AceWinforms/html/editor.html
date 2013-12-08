@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=9">
-    <title>AceWinforms</title>
+    <title>Ace Winforms</title>
     <style type="text/css" media="screen">
         #editor {
             position: absolute;
@@ -16,7 +16,7 @@
 <body>
     
     <!-- Content will be replaced by winforms -->
-    <div id="editor">{{editorText}}</div>
+    <div id="editor"></div>
 
     <!-- Found this hosted version of ace.js, but you could include the -->
     <script src="http://cdn.jsdelivr.net/ace/1.1.01/min/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -24,9 +24,22 @@
     <!-- Instead of above, you could package up a pre-built version of ACE.JS (plus syntax highlighters, etc) and ship with your app... -->
     <!--script src="file://S:/src/AceWinforms/src-min-10.28.2013/ace.js" type="text/javascript" charset="utf-8"></script-->
     <script>
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/{{theme}}");
-        editor.getSession().setMode("ace/mode/{{highlighter}}");
+        var ed = ace.edit("editor");
+        ed.setTheme("ace/theme/{{theme}}");
+        ed.getSession().setMode("ace/mode/{{highlighter}}");
+
+        // Called from C# 
+        function getAceEditorText()
+        {
+            return ed.getValue();
+        }
+        
+        // Called from C#
+        function setAceEditorText(s) {
+            ed.setValue(s);
+        }
+        
+
     </script>
 </body>
 </html>

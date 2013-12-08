@@ -54,5 +54,10 @@ namespace Sample
             codeEditor1.Load();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(codeEditor1.Text);
+        }
+
     }
 }

@@ -37,6 +37,7 @@ namespace AceWinforms
     public partial class CodeEditor : WebBrowser
     {
         private string _minIeVersion;
+        private bool _htmlLoaded = false;
 
         public CodeEditor()
         {
@@ -44,7 +45,14 @@ namespace AceWinforms
 
             InitializeComponent();
 
+            this.DocumentCompleted += CodeEditor_DocumentCompleted;
             //Load();
+        }
+
+        void CodeEditor_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            _htmlLoaded = true;
+            this.EditorText = _textBeforeHtmlLoaded;
         }
 
         /// <summary>
@@ -84,51 +92,47 @@ namespace AceWinforms
 
         public void Load()
         {
-            // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_BROWSER_EMULATION
-            //MessageBox.Show(this, "" + webBrowser1.Version);
+            _htmlLoaded = false;
             var template = GenerateEditorHtmlFromProps();
             this.DocumentText = template;
         }
 
         private string _textBeforeHtmlLoaded;
+
         public string Text
         {
-            set
-            {
-                var editorHtmlElement = GetEditorElement();
-                if (editorHtmlElement != null)
-                {
-
-                    editorHtmlElement.InnerText = value;
-                }
-                else
-                {
-                    _textBeforeHtmlLoaded = value;
-                }
-            }
-        
             get
             {
-                var editorHtmlElement = GetEditorElement();
-                if (editorHtmlElement != null)
+                if (_htmlLoaded)
                 {
-
-                    return editorHtmlElement.InnerText;
+                    return EditorText;
                 }
                 else
                 {
                     return _textBeforeHtmlLoaded;
                 }
-                
+            }
+            set
+            {
+                _textBeforeHtmlLoaded = value;
+                if (_htmlLoaded)
+                {
+                    EditorText = value;
+                }
             }
         }
 
-        private HtmlElement GetEditorElement()
+        private string EditorText
         {
-            if (this.Document== null) 
-            { return null; 
-}
-            return this.Document.GetElementById("editor");
+            set
+            {
+                this.Document.InvokeScript("setAceEditorText", new object[] {value} );
+            }
+        
+            get
+            {
+                return this.Document.InvokeScript("getAceEditorText") as string;
+            }
         }
 
         private string GenerateEditorHtmlFromProps()
@@ -137,7 +141,6 @@ namespace AceWinforms
             template = ReplaceTemplateField(template, "{{highlighter}}", this.HighlighterMode);
             template = ReplaceTemplateField(template, "{{theme}}", this.Theme);
             template = ReplaceTemplateField(template, "{{minIeVersion}}", this.MinIeVersion);
-            template = ReplaceTemplateField(template, "{{editorText}}", this.Text);
             return template;
         }
 
